@@ -1,7 +1,12 @@
 //importo el user desde models
 //sintaxis de desestructuración, permite importar la variable 
 const { User } = require('../models');
+//importa la biblioteca de cifrado para almacenar la contraseña
+const bcrypt = require('bcrypt');
+//importa la verificacion del token (autenticacion y autorizacion)
+//const jwt = require('jsonwebtoken');
 
+//se define el controlador de autenticación
 const authController = {};
 
 authController.register = async (req, res) => {
@@ -43,3 +48,5 @@ authController.register = async (req, res) => {
         return res.send('Something went wrong creating users ' + error.message)
     }
 }
+
+module.exports = authController
