@@ -40,14 +40,22 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       specialityId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+          model: "Specialities",
+          key: "id"
+        }
       },
       collegiateNumber: {
         type: Sequelize.STRING
       },
       roleId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+          model: "Roles",
+          key: "id"
+        }
       },
       createdAt: {
         allowNull: true,
