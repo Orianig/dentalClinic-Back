@@ -14,20 +14,21 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-      name: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      dni: DataTypes.STRING,
-      phoneNumber: DataTypes.STRING,
-      gender: DataTypes.ENUM('hombre', 'mujer'),
-        birthdate: DataTypes.DATEONLY,
-          specialityId: DataTypes.INTEGER,
-            collegiateNumber: DataTypes.STRING,
-              roleId: DataTypes.INTEGER
-}, {
-  sequelize,
-  modelName: 'User',
-});
-return User;
+    name: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    dni: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING,
+    gender: DataTypes.ENUM('hombre', 'mujer'),
+    birthdate: DataTypes.DATEONLY,
+    specialityId: DataTypes.INTEGER,
+    collegiateNumber: DataTypes.STRING,
+    roleId: DataTypes.INTEGER
+  }, 
+  {
+    sequelize,
+    modelName: 'User',
+  });
+  return User;
 };

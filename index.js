@@ -15,7 +15,7 @@ app.use(express.json());
 //para gestionar todas las rutas del router
 app.use(router);
 //ruta general para mensaje de comprobacion de puerto
-app.get('/runningPort', auth, (req, res) => {
+app.get('/runningPort', (req, res) => {
     return res.send('Welcome to the beginning of nothingness');
 });
 

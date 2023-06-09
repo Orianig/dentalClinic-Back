@@ -4,7 +4,7 @@ const { User } = require('../models');
 //importa la biblioteca de cifrado para almacenar la contraseña
 const bcrypt = require('bcrypt');
 //importa la verificacion del token (autenticacion y autorizacion)
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 //se define el controlador de autenticación
 const authController = {};
