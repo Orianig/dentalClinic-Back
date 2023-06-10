@@ -10,14 +10,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE, //'2023-06-07T14:30:00'
+        allowNull: false,
       },
       interventionTypeId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Interventions",
           key: "id"
-        }
+        },
+        allowNull: false,
       },
       details: {
         type: Sequelize.STRING
@@ -30,7 +32,9 @@ module.exports = {
           where: {
             roleId: 3
           }
-        }
+        },
+        allowNull: false,
+        unique: true
       },
       dentistId: {
         type: Sequelize.INTEGER,
@@ -40,17 +44,19 @@ module.exports = {
           where: {
             roleId: 2
           }
-        }
+        },
+        allowNull: false,
+        unique: true
       },
       results: {
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });
