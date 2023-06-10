@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 //se define el controlador de autenticación
 const authController = {};
 
+//registro de un nuevo usuario en el sistema
 authController.register = async (req, res) => {
     try {
         const password = req.body.password;
@@ -46,6 +47,68 @@ authController.register = async (req, res) => {
         return res.send(newUser);
     } catch (error) {
         return res.send('Something went wrong creating users ' + error.message)
+    }
+}
+
+// login de un usuario en el sistema
+authController.login = async (req, res) => {
+    try {
+        //se requiere solo el email y la password
+        const { email, password } = req.body;
+
+        const user = await User.findOne(
+            {
+                //se busca en el sistema por email
+                where: {
+                    email: email
+                }
+            }
+        );
+        //si el correo no existe en la base de datos
+        if (!user) {
+            return res.json(
+                {
+                    success: true,
+                    message: "Wrong credentials"
+                }
+            )
+        }
+        //validacion de la contraseña
+        const match = bcrypt.compareSync(password, user.password);
+        //si la contraseña no coincide con la guardada
+        if (!match) {
+            return res.json(
+                {
+                    success: true,
+                    message: "Wrong credentials"
+                }
+
+            )
+        }
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                email: user.email,
+                roleId: user.roleId
+            },
+
+            'myclinic'
+        );
+        return res.json(
+            {
+                success: true,
+                message: "successfully logged in",
+                token: token
+            }
+        );
+    } catch (error) {
+        return res.status(500).json(
+            {
+                success: false,
+                message: "user cant be logged",
+                error: error
+            }
+        )
     }
 }
 

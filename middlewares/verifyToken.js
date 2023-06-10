@@ -22,9 +22,10 @@ const auth = (req, res, next) => {
 
         //verificacion y decodificacion del token
         const decoded = jwt.verify(token, 'myclinic');
-
+        console.log(1,decoded)
         req.userId = decoded.userId;
         req.roleId = decoded.roleId;
+        console.log(2,decoded)
 
         next();
     } catch (error) {
