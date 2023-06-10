@@ -5,6 +5,7 @@ const appointController = {};
 appointController.createAppointment = async (req, res) => {
     try {
         const { date, interventionTypeId, details, patientId, dentistId, results } = req.body;
+        //tomo el role y user id para su validacion
         const { roleId, userId } = req;
 
         if (roleId === 3 && patientId !== userId) {
@@ -51,7 +52,7 @@ appointController.createAppointment = async (req, res) => {
 
 appointController.updateAppointment = async (req, res) => {
     try {
-        const bookId = req.params.id;
+        const userId = req.userId;
 
         const book = await Book.findByPk(bookId);
 

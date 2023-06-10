@@ -50,7 +50,11 @@ userController.getUserProfile = async (req, res) => {
 userController.getAllUsersProfile = async (req, res) => {
     try {
 
-        const users = await User.findAll();
+        const users = await User.findAll({
+            where: {
+                roleId: 3
+            }
+        });
 
         return res.json({
             success: true,
@@ -99,8 +103,8 @@ userController.updateProfile = async (req, res) => {
         if (birthdate) updates.birthdate = birthdate;
         if (specialityId) updates.specialityId = specialityId;
         if (collegiateNumber) updates.collegiateNumber = collegiateNumber;
-        
-// condicion para mantener el encriptado de la contraseña si se desea actualizar
+
+        // condicion para mantener el encriptado de la contraseña si se desea actualizar
         if (password) {
             if (password.length < 6) {
                 return res.send('Password must be longer than 6 characters');
