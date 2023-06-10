@@ -4,7 +4,6 @@ const express = require('express');
 //importa e contenido de db.js
 const db = require('./db');
 const router = require('./router');
-const auth = require('./middlewares/verifyToken');
 //configuracion de la aplicación express
 const app = express();
 const PORT = 3000;

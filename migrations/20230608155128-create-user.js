@@ -18,7 +18,8 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING(30)
+        type: Sequelize.STRING(30),
+        unique: true
       },
       password: {
         allowNull: false,
@@ -26,11 +27,12 @@ module.exports = {
       },
       dni: {
         allowNull: false,
-        type: Sequelize.STRING(15)
+        type: Sequelize.STRING(15),
       },
       phoneNumber: {
         allowNull: false,
-        type: Sequelize.STRING(15)
+        type: Sequelize.STRING(15),
+        unique: true
       },
       gender: {
         type: Sequelize.ENUM('hombre', 'mujer'),
@@ -41,18 +43,19 @@ module.exports = {
       },
       specialityId: {
         type: Sequelize.INTEGER,
-        references:{
+        references: {
           model: "Specialities",
           key: "id"
         }
       },
       collegiateNumber: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       roleId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references:{
+        references: {
           model: "Roles",
           key: "id"
         }
