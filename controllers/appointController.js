@@ -1,32 +1,37 @@
-const { Appointments } = require("../models");
-const { QueryTypes } = require('sequelize');
+const { Appointment } = require("../models");
+// const { QueryTypes } = require('sequelize');
 const appointController = {};
 
-appointController.newAppointment = async(req, res) => {
+appointController.createAppointment = async (req, res) => {
     try {
-        const { date, interventionTypeId, details, patientId, dentistId, results  } = req.body;
+        const { date, interventionTypeId, details, patientId, dentistId, results } = req.body;
 
         //validaciones
 
-        const newBook = await Book.create(
+        const newAppointment = await Appointment.create(
             {
-                title: title,
-                description
+                date,//'2023-06-07T14:30:00'
+                interventionTypeId,
+                details,
+                patientId,
+                dentistId,
+                results
             }
         );
-        
+
         return res.json({
             success: true,
-            message: "Book created",
-            data: newBook
-        });       
+            message: "Appointment created",
+            data: newAppointment
+        });
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Book cant be created",
+                message: "Appointment cant be created",
                 error: error
             }
         )
     }
 }
+module.exports = appointController;
