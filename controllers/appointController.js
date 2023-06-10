@@ -9,19 +9,19 @@ appointController.createAppointment = async (req, res) => {
         const { roleId, userId } = req;
 
         if (roleId === 3 && patientId !== userId) {
-          // Solo los usuarios con roleId igual a 3 pueden crear citas con su propio userId
-          return res.json({
-            success: false,
-            message: "You can only create appointments for yourself",
-          });
+            // Solo los usuarios con roleId igual a 3 pueden crear citas con su propio userId
+            return res.json({
+                success: false,
+                message: "You can only create appointments for yourself",
+            });
         }
         if (roleId === 2 && !patientId) {
             // Los usuarios con roleId igual a 2 deben proporcionar un patientId válido
             return res.json({
-              success: false,
-              message: "Patient ID is required for dentists",
+                success: false,
+                message: "Patient ID is required for dentists",
             });
-          }
+        }
 
         const newAppointment = await Appointment.create(
             {
@@ -52,29 +52,33 @@ appointController.createAppointment = async (req, res) => {
 
 appointController.updateAppointment = async (req, res) => {
     try {
-        const userId = req.userId;
+        const appointmentId = req.params.id;
 
-        const book = await Book.findByPk(bookId);
+        const appointment = await Appointment.findByPk(appointmentId);
 
-        if (!book) {
+        if (!appointment) {
             return res.json(
                 {
                     success: true,
-                    message: "Book doesnt exists"
+                    message: "AppointmentId doesnt exists"
                 }
             );
         };
 
         const { date, interventionTypeId, details, dentistId, results } = req.body;
-
-        const bookUpdated = await Book.update(
+            // Verificar el rol del usuario que realiza la solicitud
+           
+        const appointmentUpdate = await Appointment.update(
             {
-                title: title,
-                description: description
+                date,//'2023-06-07T14:30:00'
+                interventionTypeId,
+                details,
+                dentistId,
+                results
             },
             {
                 where: {
-                    id: bookId
+                    id: appointmentId
                 }
             }
         )
@@ -82,15 +86,15 @@ appointController.updateAppointment = async (req, res) => {
         return res.json(
             {
                 success: true,
-                message: "Book updated",
-                data: bookUpdated
+                message: "Appointment updated",
+                data: appointmentUpdate
             }
         );
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Book cant be updated",
+                message: "Appointment cant be updated",
                 error: error
             }
         )

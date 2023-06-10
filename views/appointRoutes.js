@@ -5,7 +5,7 @@ const auth = require('../middlewares/verifyToken');
 
 //citas para usuarios en general
 router.post('/newAppointment', auth, appointController.createAppointment);
-router.put('/updateAppointment',auth, appointController.updateAppointment);
+router.put('/:id', auth, appointController.updateAppointment);
 // router.delete('/deletAppointment',auth, appointController.deleteAppointment);
 
 // //citas para el paciente
