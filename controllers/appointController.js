@@ -5,8 +5,22 @@ const appointController = {};
 appointController.createAppointment = async (req, res) => {
     try {
         const { date, interventionTypeId, details, patientId, dentistId, results } = req.body;
+        const { roleId, userId } = req;
 
-        //validaciones
+        if (roleId === 3 && patientId !== userId) {
+          // Solo los usuarios con roleId igual a 3 pueden crear citas con su propio userId
+          return res.json({
+            success: false,
+            message: "You can only create appointments for yourself",
+          });
+        }
+        if (roleId === 2 && !patientId) {
+            // Los usuarios con roleId igual a 2 deben proporcionar un patientId válido
+            return res.json({
+              success: false,
+              message: "Patient ID is required for dentists",
+            });
+          }
 
         const newAppointment = await Appointment.create(
             {
@@ -34,4 +48,53 @@ appointController.createAppointment = async (req, res) => {
         )
     }
 }
+
+appointController.updateAppointment = async (req, res) => {
+    try {
+        const bookId = req.params.id;
+
+        const book = await Book.findByPk(bookId);
+
+        if (!book) {
+            return res.json(
+                {
+                    success: true,
+                    message: "Book doesnt exists"
+                }
+            );
+        };
+
+        const { date, interventionTypeId, details, dentistId, results } = req.body;
+
+        const bookUpdated = await Book.update(
+            {
+                title: title,
+                description: description
+            },
+            {
+                where: {
+                    id: bookId
+                }
+            }
+        )
+
+        return res.json(
+            {
+                success: true,
+                message: "Book updated",
+                data: bookUpdated
+            }
+        );
+    } catch (error) {
+        return res.status(500).json(
+            {
+                success: false,
+                message: "Book cant be updated",
+                error: error
+            }
+        )
+    }
+}
+
+
 module.exports = appointController;

@@ -73,7 +73,7 @@ userController.updateProfile = async (req, res) => {
     try {
         //si le meto el token erroneo no me a poder actualizar el profile
         const userId = req.userId;
-        console.log(userId)
+        console.log()
         const user = await User.findByPk(userId);
 
         if (!user) {
@@ -87,20 +87,20 @@ userController.updateProfile = async (req, res) => {
 
         const { name, lastName, email, password, dni, phoneNumber, gender, birthdate, specialityId, collegiateNumber } = req.body;
 
-        const updateFields = {};
+        const updates = {};
 
-        if (name) {
-            updateFields.name = name;
-        }
-
-        if (lastName) {
-            updateFields.lastName = lastName;
-        }
-
-        if (email) {
-            updateFields.email = email;
-        }
-
+        //permite actualizar los datos que se solicitan 
+        if (name) updates.name = name;
+        if (lastName) updates.lastName = lastName;
+        if (email) updates.email = email;
+        if (dni) updates.dni = dni;
+        if (phoneNumber) updates.phoneNumber = phoneNumber;
+        if (gender) updates.gender = gender;
+        if (birthdate) updates.birthdate = birthdate;
+        if (specialityId) updates.specialityId = specialityId;
+        if (collegiateNumber) updates.collegiateNumber = collegiateNumber;
+        
+// condicion para mantener el encriptado de la contraseña si se desea actualizar
         if (password) {
             if (password.length < 6) {
                 return res.send('Password must be longer than 6 characters');
@@ -115,39 +115,17 @@ userController.updateProfile = async (req, res) => {
             }
 
             const newPassword = bcrypt.hashSync(password, 8);
-            updateFields.password = newPassword;
+            updates.password = newPassword;
         }
 
-        if (dni) {
-            updateFields.dni = dni;
-        }
-
-        if (phoneNumber) {
-            updateFields.phoneNumber = phoneNumber;
-        }
-
-        if (gender) {
-            updateFields.gender = gender;
-        }
-
-        if (birthdate) {
-            updateFields.birthdate = birthdate;
-        }
-
-        if (specialityId) {
-            updateFields.specialityId = specialityId;
-        }
-
-        if (collegiateNumber) {
-            updateFields.collegiateNumber = collegiateNumber;
-        }
-
-        const userUpdated = await User.update(updateFields, {
+        const userUpdated = await User.update(updates, {
             where: {
                 id: userId
             }
         });
-        console.log(userUpdated)
+
+        console.log(userId);
+
         return res.json(
             {
                 success: true,

@@ -34,7 +34,6 @@ module.exports = {
           }
         },
         allowNull: false,
-        unique: true
       },
       dentistId: {
         type: Sequelize.INTEGER,
@@ -46,7 +45,6 @@ module.exports = {
           }
         },
         allowNull: false,
-        unique: true
       },
       results: {
         type: Sequelize.STRING
