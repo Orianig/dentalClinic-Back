@@ -46,7 +46,7 @@ userController.getUserProfile = async (req, res) => {
     }
 }
 
-//obtencion de todos los perfiles de usuario
+//obtencion de todos los perfiles de clientes (doctor)
 userController.getAllUsersProfile = async (req, res) => {
     try {
 
