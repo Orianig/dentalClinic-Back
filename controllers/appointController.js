@@ -86,26 +86,51 @@ appointController.createAppointment = async (req, res) => {
 //actualizar una cita
 appointController.updateAppointment = async (req, res) => {
     try {
-        const userId = req.userId
+        //requerimiento de los datos
+        const userId = req.userId;
+        const roleId = req.roleId;
         const appointmentId = req.params.id;
-        console.log(userId)
-        console.log(appointmentId)
-
+        //confirmacion de la existencia de la cita
+        const appointmentExist = await Appointment.findByPk(appointmentId);
+        if (!appointmentExist) {
+            return res.json({
+                success: false,
+                message: "Appointment doesn't exist",
+            });
+        }
+        //datos que se requeriran desde el body
         const { date, details, results } = req.body;
 
+        //VALIDACIONES
+        // Verificar si el usuario tiene permiso para actualizar la cita
+        if (roleId === 3 && appointmentExist.patientId !== userId) {
+            return res.json({
+                success: false,
+                message: "You can only update your own appointments",
+            });
+        } else if (roleId === 2 && appointmentExist.dentistId !== userId) {
+            return res.json({
+                success: false,
+                message: "You can only update appointments where you are the assigned dentist",
+            });
+        }
+        //update de la cita en base a los datos previos
         const appointmentUpdate = await Appointment.update(
             {
                 date,
                 details,
-                results
+                //condiciona que solo el doctor pueda rellenar este campo
+                'results': roleId === 2 ? results : appointmentExist.results
             },
             {
                 where: {
-                    id: appointmentId,
+                    id: appointmentId
                 }
             }
-        )
-        console.log(appointmentUpdate);
+        );
+
+        //console.log(appointmentUpdate);
+
         return res.json({
             success: true,
             message: "Appointment updated",
@@ -114,13 +139,11 @@ appointController.updateAppointment = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: "Appointment cant be updated",
+            message: "Appointment can't be updated",
             error: error
         });
-        
     }
-   
-}
+};
 
 
 // eliminar una cita

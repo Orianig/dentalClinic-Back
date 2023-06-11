@@ -14,14 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(
         models.Role, {
         foreignKey: 'roleId'
-      }
-      )
+      })
       User.belongsToMany(
         models.Intervention,
         {
           through: 'Appointments',
           foreignKey: 'userId'
-      })
+        })
+      User.belongsTo(
+        models.Speciality,
+        {
+          foreignKey: 'specialityId'
+        })
     }
   }
   User.init({

@@ -15,18 +15,18 @@ userController.getUserProfile = async (req, res) => {
 
             {
                 attributes: {
-                    exclude: ["password"]
+                    exclude: ["password", "createdAt","updatedAt", "roleId"]
                 },
-                // include: appointments,
-                // include: [
-                //     {
-                //         attributes: {
-                //             exclude: ["updatedAt"]
-                //         },
-                //         model: Book,
+                include: specialityId,
+                include: [
+                {
+                        attributes: {
+                            exclude: ["updatedAt","createdAt"]
+                        },
+                        model: Speciality
 
-                //     }
-                //]
+                    }
+                ]
             }
         )
 
