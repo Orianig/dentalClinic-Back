@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.DATE, //'2023-06-07T14:30:00'
         allowNull: false,
       },
-      interventionTypeId: {
+      interventionId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Interventions",

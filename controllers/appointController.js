@@ -1,40 +1,72 @@
 const { Appointment, User, Intervention } = require("../models");
+const { roleId, userId } = require("../models/user");
 // const { QueryTypes } = require('sequelize');
 const appointController = {};
 
 //crear nueva cita
 appointController.createAppointment = async (req, res) => {
     try {
-        const { date, interventionTypeId, details, patientId, dentistId, results } = req.body;
+        const { date, interventionId, details, patientId, dentistId, results } = req.body;
         //tomo el role y user id para su validacion
-        const { roleId, userId } = req;
 
+        //CONDICIONALES
+        // los usuarios con roleId igual a 3 pueden crear citas con su propio userId
         if (roleId === 3 && patientId !== userId) {
-            // Solo los usuarios con roleId igual a 3 pueden crear citas con su propio userId
+            //mensaje de error si trata de implementar otro usuario
             return res.json({
                 success: false,
                 message: "You can only create appointments for yourself",
             });
         }
+        // los usuarios con roleId igual a 2 pueden crear citas tanto para 
+        //pacientes como para otros doctores => deben proporcionar un patientId valido
         if (roleId === 2 && !patientId) {
-            // Los usuarios con roleId igual a 2 deben proporcionar un patientId válido
+
             return res.json({
                 success: false,
                 message: "Patient ID is required for dentists",
             });
         }
-
+        //solo se puede colocar un patientId => roleId = 3
+        if (patientId) {
+            const patient = await User.findOne({
+                where: {
+                    id: patientId,
+                    roleId: 3
+                }
+            });
+            if (!patient) {
+                return res.json({
+                    success: false,
+                    message: "Invalid patient ID",
+                });
+            }
+        }
+        //solo se puede colocar un dentistId => roleId = 2
+        if (dentistId) {
+            const dentist = await User.findOne({
+                where: {
+                    id: dentistId,
+                    roleId: 2
+                }
+            });
+            if (!dentist) {
+                return res.json({
+                    success: false,
+                    message: "Invalid dentist ID",
+                });
+            }
+        }
+        //parametros de la nueva cita
         const newAppointment = await Appointment.create(
             {
                 date,//'2023-06-07T14:30:00'
-                interventionTypeId,
+                interventionId,
                 details,
                 patientId,
-                dentistId,
-                results
+                dentistId
             }
         );
-
         return res.json({
             success: true,
             message: "Appointment created",
@@ -54,54 +86,42 @@ appointController.createAppointment = async (req, res) => {
 //actualizar una cita
 appointController.updateAppointment = async (req, res) => {
     try {
+        const userId = req.userId
         const appointmentId = req.params.id;
+        console.log(userId)
+        console.log(appointmentId)
 
-        const appointment = await Appointment.findByPk(appointmentId);
-
-        if (!appointment) {
-            return res.json(
-                {
-                    success: true,
-                    message: "AppointmentId doesnt exists"
-                }
-            );
-        };
-
-        const { date, interventionTypeId, details, dentistId, results } = req.body;
-        // Verificar el rol del usuario que realiza la solicitud
+        const { date, details, results } = req.body;
 
         const appointmentUpdate = await Appointment.update(
             {
-                date,//'2023-06-07T14:30:00'
-                interventionTypeId,
+                date,
                 details,
-                dentistId,
                 results
             },
             {
                 where: {
-                    id: appointmentId
+                    id: appointmentId,
                 }
             }
         )
-
-        return res.json(
-            {
-                success: true,
-                message: "Appointment updated",
-                data: appointmentUpdate
-            }
-        );
+        console.log(appointmentUpdate);
+        return res.json({
+            success: true,
+            message: "Appointment updated",
+            data: appointmentUpdate
+        });
     } catch (error) {
-        return res.status(500).json(
-            {
-                success: false,
-                message: "Appointment cant be updated",
-                error: error
-            }
-        )
+        return res.status(500).json({
+            success: false,
+            message: "Appointment cant be updated",
+            error: error
+        });
+        
     }
+   
 }
+
 
 // eliminar una cita
 appointController.deleteAppointment = async (req, res) => {
@@ -135,7 +155,6 @@ appointController.deleteAppointment = async (req, res) => {
 //obtener citas propias
 appointController.getUserAppointments = async (req, res) => {
     try {
-        const { userId } = req;
 
         const getUserAppointments = await Appointment.findAll({
             where: {
@@ -207,10 +226,12 @@ appointController.getAllUserAppointments = async (req, res) => {
 appointController.getAppointmentDetails = async (req, res) => {
     try {
         const userId = req.userId;
-        console.log(userId)
+
         const appointmentId = req.params.id;
-        console.log(appointmentId)
-        
+        console.log("userId:", userId);
+        console.log("appointmentId:", appointmentId);
+
+
         const appointment = await Appointment.findByPk(appointmentId, {
             attributes: {
                 exclude: ["createdAt", "updatedAt"]
@@ -233,8 +254,9 @@ appointController.getAppointmentDetails = async (req, res) => {
                 id: appointmentId
             }
         });
-
+        console.log("appointment:", appointment);
         if (!appointment || appointment.UserId !== userId) {
+            console.log("Appointment not found or does not belong to the authenticated user");
             return res.json({
                 success: false,
                 message: "Appointment not found or does not belong to the authenticated user"
@@ -247,6 +269,7 @@ appointController.getAppointmentDetails = async (req, res) => {
             data: appointment
         });
     } catch (error) {
+        console.log("Error:", error);
         return res.status(500).json({
             success: false,
             message: "Appointment details could not be retrieved",

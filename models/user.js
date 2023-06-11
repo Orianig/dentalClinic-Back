@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'roleId'
       }
       )
+      User.belongsToMany(
+        models.Intervention,
+        {
+          through: 'Appointments',
+          foreignKey: 'userId'
+      })
     }
   }
   User.init({
