@@ -47,6 +47,49 @@ body:
   
   POST http://localhost:3000/auth/login
   
+• user
+  
+  ### /profile
+```plaintext
+  GET http://localhost:3000/user/profile
+```
+  ### /allProfiles
+
+  GET http://localhost:3000/user/allProfiles
+  
+  ### /UpdateProfiles
+
+  PUT http://localhost:3000/user/updateProfile
+  
+  ### /updateProfileAdmin
+
+  PUT http://localhost:3000/user/:id
+  
+  ### /deleteProfileAdmin
+
+  DELETE http://localhost:3000/user/:id
+  
+• appointment
+  
+  ### /profile
+
+  GET http://localhost:3000/user/profile
+  
+  ### /allProfiles
+
+  GET http://localhost:3000/user/allProfiles
+  
+  ### /UpdateProfiles
+
+  PUT http://localhost:3000/user/updateProfile
+  
+  ### /updateProfileAdmin
+
+  PUT http://localhost:3000/user/:id
+  
+  ### /deleteProfileAdmin
+
+  DELETE http://localhost:3000/user/:id
   
   
   
@@ -57,6 +100,6 @@ body:
   
 </details>
 
-##Licencia
+## Licencia
 
 Este proyecto se ha realizado bajo la licencia MIT.
