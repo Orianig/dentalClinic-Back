@@ -5,6 +5,7 @@ const { User } = require('../models');
 const bcrypt = require('bcrypt');
 //importa la verificacion del token (autenticacion y autorizacion)
 const jwt = require('jsonwebtoken');
+const secretKey = process.env.SECRET_KEY;
 
 //se define el controlador de autenticación
 const authController = {};
@@ -38,9 +39,7 @@ authController.register = async (req, res) => {
                 phoneNumber: req.body.phoneNumber,
                 gender: req.body.gender,
                 birthdate: req.body.birthdate,
-                specialityId: req.body.specialityId,
-                collegiateNumber: req.body.collegiateNumber,
-                roleId: req.body.roleId,
+                roleId: 3
             }
         );
 
@@ -92,7 +91,7 @@ authController.login = async (req, res) => {
                 roleId: user.roleId
             },
 
-            'myclinic'
+            secretKey
         );
         return res.json(
             {
