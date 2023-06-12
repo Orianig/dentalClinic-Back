@@ -29,7 +29,7 @@ Esta API (My Dental Clinic) contiene las siguientes relaciones:
 ##  Endpoints
 <details>
   <summary><strong>Endpoints:</strong></summary>
-• auth
+## • auth
 
 ### /register
 
@@ -66,7 +66,7 @@ body:
   
   POST `http://localhost:3000/auth/login`
 
-• user
+## • user
   
   ### /profile
   
@@ -88,7 +88,7 @@ body:
 
   DELETE `http://localhost:3000/user/:id`
   
-• appointment
+## • appointment
   
   ### /newAppointment
   body:
