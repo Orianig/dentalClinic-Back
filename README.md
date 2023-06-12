@@ -29,27 +29,35 @@ Esta API (My Dental Clinic) contiene las siguientes relaciones:
 <details>
   <summary><strong>Endpoints:</strong></summary>
 • auth
-
+```
 ### /register
-
-  POST http://localhost:3000/auth/register
+```  
+```
+  POST `http://localhost:3000/auth/register`
+ ```
 body:
-
+```
     {
         
     }
-  ### /login
-  body:
+```
+```
+### /login
+```
+body:
+```
     {
         "email":"oriana@example.com",
         "password":"123456Aa"
     }
-  
-  POST http://localhost:3000/auth/login
-  
+ ```
+ ```
+  POST `http://localhost:3000/auth/login`
+ ```
 • user
   
   ### /profile
+  
 ```plaintext
   GET http://localhost:3000/user/profile
 ```
