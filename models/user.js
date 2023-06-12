@@ -15,16 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         models.Role, {
         foreignKey: 'roleId'
       })
-      User.belongsToMany(
-        models.Intervention,
-        {
-          through: 'Appointments',
-          foreignKey: 'userId'
-        })
       User.belongsTo(
         models.Speciality,
         {
-          foreignKey: 'specialityId'
+          foreignKey: 'specialityId',
+          as: 'speciality'
         })
     }
   }
