@@ -13,6 +13,7 @@ module.exports = {
      * }], {});
     */
     //me devuelve los datos en el workbench sin yo tener que introducirlos manualmente
+    
     return queryInterface.bulkInsert('Roles', [
       {
         id: 1,
