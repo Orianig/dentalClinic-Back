@@ -1,5 +1,6 @@
 //importa el modulo
 const jwt = require('jsonwebtoken');
+const secretKey = process.env.SECRET_KEY;
 
 //función de middleware (autenticación y la autorización); toma la solicitud, respuesta y siguiente
 const auth = (req, res, next) => {
@@ -21,7 +22,7 @@ const auth = (req, res, next) => {
         const token = bearerToken.split(" ")[1];
 
         //verificacion y decodificacion del token
-        const decoded = jwt.verify(token, 'myclinic');
+        const decoded = jwt.verify(token, secretKey);
         console.log(1,decoded)
         req.userId = decoded.userId;
         req.roleId = decoded.roleId;
