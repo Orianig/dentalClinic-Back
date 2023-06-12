@@ -6,7 +6,7 @@ const appointController = {};
 //crear nueva cita
 appointController.createAppointment = async (req, res) => {
     try {
-        const { date, interventionId, details, patientId, dentistId, results } = req.body;
+        const { date, interventionId, details, patientId, dentistId } = req.body;
         //tomo el role y user id para su validacion
 
         //CONDICIONALES
@@ -64,7 +64,7 @@ appointController.createAppointment = async (req, res) => {
                 interventionId,
                 details,
                 patientId,
-                dentistId
+                dentistId,
             }
         );
         return res.json({
@@ -73,6 +73,7 @@ appointController.createAppointment = async (req, res) => {
             data: newAppointment
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json(
             {
                 success: false,
@@ -147,9 +148,35 @@ appointController.updateAppointment = async (req, res) => {
 
 
 // eliminar una cita
+
 appointController.deleteAppointment = async (req, res) => {
     try {
+        //requerimiento de los datos
+        const userId = req.userId;
+        const roleId = req.roleId;
         const appointmentId = req.params.id;
+        //confirmacion de la existencia de la cita
+        const appointmentExist = await Appointment.findByPk(appointmentId);
+        if (!appointmentExist) {
+            return res.json({
+                success: false,
+                message: "Appointment doesn't exist",
+            });
+        }
+
+        //VALIDACIONES
+        // Verificar si el usuario tiene permiso para actualizar la cita
+        if (roleId === 3 && appointmentExist.patientId !== userId) {
+            return res.json({
+                success: false,
+                message: "You can only delete your own appointments",
+            });
+        } else if (roleId === 2 && appointmentExist.dentistId !== userId) {
+            return res.json({
+                success: false,
+                message: "You can only delete appointments where you are the assigned dentist",
+            });
+        }
 
         const deleteAppointment = await Appointment.destroy({
             where: {
@@ -157,25 +184,21 @@ appointController.deleteAppointment = async (req, res) => {
             }
         });
 
-        return res.json(
-            {
-                success: true,
-                message: "Appointment deleted",
-                data: deleteAppointment
-            }
-        );
+        return res.json({
+            success: true,
+            message: "Appointment deleted",
+            data: deleteAppointment
+        });
     } catch (error) {
-        return res.status(500).json(
-            {
-                success: false,
-                message: "Appointment cant be deleted",
-                error: error
-            }
-        )
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Appointment can't be deleted",
+            error: error
+        });
     }
 }
-
-//obtener citas propias
+//obtener solo las citas del paciente
 appointController.getUserAppointments = async (req, res) => {
     try {
 
@@ -199,7 +222,7 @@ appointController.getUserAppointments = async (req, res) => {
     }
 };
 
-//obtener todas las citas(doctor)
+//obtener todas las citas existentes
 appointController.getAllAppointments = async (req, res) => {
     try {
 
@@ -219,7 +242,7 @@ appointController.getAllAppointments = async (req, res) => {
     }
 };
 
-//obtener todas las citas(doctor)
+//obtener todas las citas propias del doctor
 appointController.getAllUserAppointments = async (req, res) => {
     try {
 
@@ -249,54 +272,53 @@ appointController.getAllUserAppointments = async (req, res) => {
 appointController.getAppointmentDetails = async (req, res) => {
     try {
         const userId = req.userId;
-
+        const roleId = req.roleId;
         const appointmentId = req.params.id;
-        console.log("userId:", userId);
-        console.log("appointmentId:", appointmentId);
 
-
-        const appointment = await Appointment.findByPk(appointmentId, {
+        const appointment = await Appointment.findOne({
+            where: {
+                id: appointmentId,
+                [roleId === 3 ? 'patientId' : roleId === 2 ? 'dentistId' : null]: userId,
+            },
             attributes: {
-                exclude: ["createdAt", "updatedAt"]
+                exclude: ["createdAt", "updatedAt"],
             },
             include: [
                 {
                     model: Intervention,
+                    as: 'intervention',
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
-                    }
+                        exclude: ["createdAt", "updatedAt"],
+                    },
                 },
                 {
                     model: User,
+                    as: roleId === 3 ? 'patient' : roleId === 2 ? 'dentist' : null,
                     attributes: {
-                        exclude: ["email", "password", "dni", "phoneNumber", "gender", "birthdate", "collegiateNumber", "roleId", "createdAt", "updatedAt"]
-                    }
-                }
+                        exclude: ["email", "password", "dni", "phoneNumber", "gender", "birthdate", "collegiateNumber", "roleId", "createdAt", "updatedAt"],
+                    },
+                },
             ],
-            where: {
-                id: appointmentId
-            }
         });
-        console.log("appointment:", appointment);
-        if (!appointment || appointment.UserId !== userId) {
-            console.log("Appointment not found or does not belong to the authenticated user");
+
+        if (!appointment) {
             return res.json({
                 success: false,
-                message: "Appointment not found or does not belong to the authenticated user"
+                message: "Appointment doesn't exist or you don't have access to it",
             });
         }
 
         return res.json({
             success: true,
             message: "Appointment details",
-            data: appointment
+            data: appointment,
         });
     } catch (error) {
         console.log("Error:", error);
         return res.status(500).json({
             success: false,
             message: "Appointment details could not be retrieved",
-            error: error
+            error: error,
         });
     }
 };
