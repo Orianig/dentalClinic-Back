@@ -29,7 +29,7 @@ Esta API (My Dental Clinic) contiene las siguientes relaciones:
 ##  Endpoints
 <details>
   <summary><strong>Endpoints:</strong></summary>
-• ## auth
+• auth
 
  /register
 
