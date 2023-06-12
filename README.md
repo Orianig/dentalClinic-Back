@@ -29,9 +29,9 @@ Esta API (My Dental Clinic) contiene las siguientes relaciones:
 ##  Endpoints
 <details>
   <summary><strong>Endpoints:</strong></summary>
-## • auth
+• auth
 
-### /register
+ /register
 
   POST `http://localhost:3000/auth/register`
 
@@ -53,7 +53,7 @@ body:
     }
 ```
   
-### /login
+/login
 
 body:
   
@@ -66,21 +66,21 @@ body:
   
   POST `http://localhost:3000/auth/login`
 
-## • user
+• user
   
-  ### /profile
+ /profile
   
   GET `http://localhost:3000/user/profile`
 
-  ### /allProfiles
+/allProfiles
 
-  GET `http://localhost:3000/user/allProfiles`
+ GET `http://localhost:3000/user/allProfiles`
   
-  ### /UpdateProfile
+ /UpdateProfile
 
   PUT `http://localhost:3000/user/updateProfile`
   
-  ### /updateProfileAdmin
+ /updateProfileAdmin
 
   PUT `http://localhost:3000/user/:id`
   
@@ -88,9 +88,9 @@ body:
 
   DELETE `http://localhost:3000/user/:id`
   
-## • appointment
+• appointment
   
-  ### /newAppointment
+/newAppointment
   body:
   
 ```
@@ -107,27 +107,27 @@ body:
 
   POST `http://localhost:3000/appointment/newAppointment`
   
-  ### /allaAppointments
+ /allaAppointments
 
   PUT `http://localhost:3000/appointment/:id`
   
-  ### /deleteAppointment
+  /deleteAppointment
 
   DELETE `http://localhost:3000/appointment/:id`
   
-  ### /getUserAppointment
+ /getUserAppointment
 
   GET `http://localhost:3000/appointment/patientAppointments`
   
-  ### /getAppointmentDetails
+ /getAppointmentDetails
 
   GET `http://localhost:3000/appointment/appointmentDetail/:id`
   
-  ### /getAllAppointments
+  /getAllAppointments
 
   GET `http://localhost:3000/appointment/allAppointments`
   
-  ### /getDentistAppointments
+ /getDentistAppointments
 
   GET `http://localhost:3000/appointment/dentistAppointments`
   
