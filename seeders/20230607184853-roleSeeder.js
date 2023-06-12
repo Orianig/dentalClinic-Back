@@ -31,6 +31,12 @@ module.exports = {
         name: 'patient',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        id: 4,
+        name: 'superAdmin',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]);
   },
