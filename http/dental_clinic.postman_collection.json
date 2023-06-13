@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "96050e21-a048-4a19-b126-7aa6e839d100",
+		"name": "dental_clinic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27494895"
+	},
+	"item": [
+		{
+			"name": "register/login",
+			"item": [
+				{
+					"name": "server running",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/runningPort",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"runningPort"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"pera\",\r\n    \"lastName\": \"manzana\",\r\n    \"email\": \"pera@example.com\",\r\n    \"password\": \"Password1\",\r\n    \"dni\": \"12312323\",\r\n    \"phoneNumber\": \"123123\",\r\n    \"gender\": \"mujer\",\r\n    \"birthdate\": \"1979-06-26\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NjQzNTc2fQ.XLLd4VS2Sidtly-LgciJhGEM4mgX5OHfNK0Cq_HW_Bs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"carla@example.com\",\r\n    \"password\":\"Password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user (general)",
+			"item": [
+				{
+					"name": "user profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NjQzNTc2fQ.XLLd4VS2Sidtly-LgciJhGEM4mgX5OHfNK0Cq_HW_Bs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/profile",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NjQzNTc2fQ.XLLd4VS2Sidtly-LgciJhGEM4mgX5OHfNK0Cq_HW_Bs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"specialityId\": \"3\",\r\n    \"collegiateNumber\": \"1234566787\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/updateProfile",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"updateProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NjQzNTc2fQ.XLLd4VS2Sidtly-LgciJhGEM4mgX5OHfNK0Cq_HW_Bs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2023-07-08T15:30:00\",\r\n    \"interventionId\": 5,\r\n    \"details\": \"primera revision del paciente\",\r\n    \"patientId\": 5,\r\n    \"dentistId\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/appointments/newAppointment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								"newAppointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoicGVkcm9AZXhhbXBsZS5jb20iLCJyb2xlSWQiOjIsImlhdCI6MTY4NjQzODYyOH0.CVGRaOaCxGKEv0klUJ9M4K2M6fslSKxisDydFaVxWAM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "id",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"details\":\"hola como estas\",\r\n    \"results\":\"caries\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/appointments/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "appointment details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiY2FybGFAZXhhbXBsZS5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTY4NjY0NDE5Mn0.GKRbF-1gQg29eSYfGpAaDDuewi6J2Os0l8aHpTwDw6A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/appointments/appointmentDetail/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								"appointmentDetail",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoicGVwYUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NTk3MTI3fQ.CPl95X1Ue8CSfB8AqI_0xl_TsWWPuevAoYzfAWvUKIQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/appointments/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all user appointments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiY2FybGFAZXhhbXBsZS5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTY4NjY0NDE5Mn0.GKRbF-1gQg29eSYfGpAaDDuewi6J2Os0l8aHpTwDw6A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/appointments/patientAppointments",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								"patientAppointments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "doctor (specifics)",
+			"item": [
+				{
+					"name": "all users profile (doctor)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NjQzNTc2fQ.XLLd4VS2Sidtly-LgciJhGEM4mgX5OHfNK0Cq_HW_Bs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user/allProfiles",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"allProfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all doctor appointments (doctor)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjg2NjQzNTc2fQ.XLLd4VS2Sidtly-LgciJhGEM4mgX5OHfNK0Cq_HW_Bs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/appointments/dentistAppointments",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								"dentistAppointments"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "6",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all users appointments (doctor)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoicGVkcm9AZXhhbXBsZS5jb20iLCJyb2xlSWQiOjIsImlhdCI6MTY4NjQzODYyOH0.CVGRaOaCxGKEv0klUJ9M4K2M6fslSKxisDydFaVxWAM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/appointments/allAppointments",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"appointments",
+								"allAppointments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "admin update profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiQWxlamFuZHJhQGV4YW1wbGUuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE2ODY1OTQ2OTZ9.R_Wm2UTEbkshIZiSWCK9WdZDmjJ-zF4cchIJRwoV_vc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"jojo\",\r\n    \"roleId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "9",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImVtYWlsIjoicGVkcm9AZXhhbXBsZS5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTY4NjU4NjMyNH0.YsPMeTny8Xgd0Vch6n2orqLfu6L6NdizdfKEBoF_Owo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Paco\",\r\n    \"phoneNumber\": \"1234566787\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
