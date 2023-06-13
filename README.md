@@ -135,4 +135,4 @@ body:
 
 ## Licencia
 
-License and Copyright Add MIT Licence. The style is completely created by Oriana Infante, the images of the about.html page as well as the main logo are taken from the free svg image server.
+License and Copyright Add MIT Licence. The style is completely created by Oriana Infante. 
