@@ -12,7 +12,7 @@ router.delete('/:id',auth, appointController.deleteAppointment);
 // //obtencion de todas sus citas
 router.get('/patientAppointments',auth, appointController.getUserAppointments);
 // //obtencion de una cita en detalle
-router.get('/appointmentDetail/:id', auth, appointController.getAppointmentDetails);
+router.get('/appointmentDetail/id', auth, appointController.getAppointmentDetails);
 
 // //citas para el doctor
 // //obtencion de todas las citas existentes
