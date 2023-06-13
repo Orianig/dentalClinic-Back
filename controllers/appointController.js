@@ -201,7 +201,8 @@ appointController.deleteAppointment = async (req, res) => {
 //obtener solo las citas del paciente
 appointController.getUserAppointments = async (req, res) => {
     try {
-
+        //requerimiento de los datos
+        const userId = req.userId;
         const getUserAppointments = await Appointment.findAll({
             where: {
                 patientId: userId
@@ -278,7 +279,7 @@ appointController.getAppointmentDetails = async (req, res) => {
         const appointment = await Appointment.findOne({
             where: {
                 id: appointmentId,
-                [roleId === 3 ? 'patientId' : roleId === 2 ? 'dentistId' : null]: userId,
+                [roleId === 3 ? 'patientId' : 'dentistId' ]: userId,
             },
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
@@ -293,7 +294,7 @@ appointController.getAppointmentDetails = async (req, res) => {
                 },
                 {
                     model: User,
-                    as: roleId === 3 ? 'patient' : roleId === 2 ? 'dentist' : null,
+                    as: roleId === 3 ? 'patient' : 'dentist',
                     attributes: {
                         exclude: ["email", "password", "dni", "phoneNumber", "gender", "birthdate", "collegiateNumber", "roleId", "createdAt", "updatedAt"],
                     },
