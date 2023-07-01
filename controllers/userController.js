@@ -1,5 +1,6 @@
 const { User, Speciality } = require('../models')
 const bcrypt = require('bcrypt');
+const { Op } = require("sequelize");
 // const jwt = require('jsonwebtoken');
 const userController = {}
 
@@ -13,7 +14,7 @@ userController.getUserProfile = async (req, res) => {
         //conseguir uno segun su clave primaria
         const userProfile = await User.findByPk(userId, {
             attributes: {
-                exclude: ["id", "password", "specialityId", "createdAt", "updatedAt", "roleId"]
+                exclude: ["createdAt", "updatedAt"]
             },
             include: [
                 {
@@ -48,9 +49,17 @@ userController.getAllUsersProfile = async (req, res) => {
     try {
 
         const users = await User.findAll({
-            where: {
-                roleId: 3
-            }
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt"]
+                },
+                include: [
+                    {
+                        model: Speciality,
+                        as: 'speciality',
+                        attributes: {
+                            exclude: ["updatedAt", "createdAt"]
+                        }
+                    }],
         });
 
         return res.json({

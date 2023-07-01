@@ -5,12 +5,16 @@ const express = require('express');
 //importa e contenido de db.js
 const db = require('./db');
 const router = require('./router');
+
+const cors = require('cors')
 require('dotenv').config();
 //configuracion de la aplicación express
 const app = express();
 const PORT = 3000;
 
 //ESTABLEZCO LOS APP
+
+app.use(cors())
 //para que me lea el json que viene del front
 app.use(express.json());
 //para gestionar todas las rutas del router

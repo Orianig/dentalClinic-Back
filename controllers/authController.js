@@ -13,24 +13,25 @@ const authController = {};
 //registro de un nuevo usuario en el sistema
 authController.register = async (req, res) => {
     try {
-        const { name, lastName, email, dni, phoneNumber, gender, birthdate } = req.body;
+        const { name, lastName, email, phoneNumber } = req.body;
         const password = req.body.password;
+        
         if (password.length < 6) {
-            return res.send('Password must be longer than 6 characters');
+            return res.status(401).send('Password must be longer than 6 characters');
         }
-console.log(password)
+
         // Verificar si la contraseña contiene al menos una letra mayúscula, una letra minúscula y un número
         const hasUppercase = /[A-Z]/.test(password);
         const hasLowercase = /[a-z]/.test(password);
         const hasNumber = /\d/.test(password);
 
         if (!hasUppercase || !hasLowercase || !hasNumber) {
-            return res.send('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+            return res.status(401).send('Password must contain at least one uppercase letter, one lowercase letter, and one number');
         }
          // Verificar el formato del correo electrónico utilizando una expresión regular
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.send('Invalid email format');
+        return res.status(401).send('Invalid email format');
     }
         // se hashea la contraseña recibida en la solicitud
         const newPassword = bcrypt.hashSync(req.body.password, 8);
@@ -42,19 +43,14 @@ console.log(password)
                 lastName,
                 email,
                 password: newPassword,
-                dni,
                 phoneNumber,
-                gender,
-                birthdate,
-                specialityId: null,
-                collegiateNumber: null,
                 roleId: 3
             }
         );
-        console.log(newUser)
+
         return res.send(newUser);
     } catch (error) {
-        return res.send('Something has gone wrong with your credentials, check if they are correct: ' + error.message)
+        return res.status(500).send('Something has gone wrong with your credentials, check if they are correct: ' + error.message)
     }
 }
 
@@ -63,20 +59,25 @@ authController.login = async (req, res) => {
     try {
         //se requiere solo el email y la password
         const { email, password } = req.body;
-        console.log(email)
-        console.log(password)
+        console.log('Email:', email);
+    console.log('Password:', password);
+        // console.log(email)
+        // console.log(password)
         const user = await User.findOne(
             {
                 //se busca en el sistema por email
                 where: {
                     email: email
+                    
                 }
             }
         );
-        console.log(user)
+        console.log('Contraseña del usuario:', user.password);
+        // console.log(user)
         //si el correo no existe en la base de datos
         if (!user) {
-            return res.json(
+            console.log('Correo no encontrado en la base de datos');
+            return res.status(401).json(
                 {
                     success: true,
                     message: "Wrong credentials"
@@ -86,9 +87,10 @@ authController.login = async (req, res) => {
         //validacion de la contraseña
         const match = bcrypt.compareSync(password, user.password);
         //si la contraseña no coincide con la guardada
-        console.log(match)
+
         if (!match) {
-            return res.json(
+            console.log('Contraseña incorrecta');
+            return res.status(401).json(
                 {
                     success: true,
                     message: "Wrong credentials"
@@ -100,11 +102,14 @@ authController.login = async (req, res) => {
             {
                 userId: user.id,
                 email: user.email,
-                roleId: user.roleId
+                roleId: user.roleId,
+                name: user.name,
+                lastName: user.name,
             },
                 'myclinic'
             // process.env.SECRET_KEY
-        );
+            
+        );console.log('Token:', token);
         return res.json(
             {
                 success: true,
@@ -113,6 +118,7 @@ authController.login = async (req, res) => {
             }
         );
     } catch (error) {
+        console.log('Error al iniciar sesión:', error);
         return res.status(500).json(
             {
                 success: false,

@@ -3,7 +3,7 @@ const isStaff = (req, res, next) => {
         // si no eres doctor no puede acceder 
         const roleId = req.roleId
         console.log(roleId)
-        if (req.roleId !== 2) {
+        if (roleId !== 2 && roleId !== 1) {
             return res.json({
                 success: true,
                 message: "You dont have permissions"

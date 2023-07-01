@@ -1,5 +1,6 @@
 const { Appointment, User, Intervention } = require("../models");
 const { roleId, userId } = require("../models/user");
+const { Op } = require("sequelize");
 // const { QueryTypes } = require('sequelize');
 const appointController = {};
 
@@ -198,15 +199,43 @@ appointController.deleteAppointment = async (req, res) => {
         });
     }
 }
-//obtener solo las citas del paciente
+//obtener solo las citas del usuario
 appointController.getUserAppointments = async (req, res) => {
     try {
         //requerimiento de los datos
         const userId = req.userId;
         const getUserAppointments = await Appointment.findAll({
             where: {
-                patientId: userId
-            }
+                [Op.or]: [
+                    { patientId: userId },
+                    { dentistId: userId }
+                  ]
+            }, attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+            include: [
+                {
+                    model: Intervention,
+                    as: 'intervention',
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+                {
+                    model: User,
+                    as: 'dentist',
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+                {
+                    model: User,
+                    as: 'patient',
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+            ],
         });
 
         return res.json({
@@ -227,7 +256,34 @@ appointController.getUserAppointments = async (req, res) => {
 appointController.getAllAppointments = async (req, res) => {
     try {
 
-        const getAllAppointments = await Appointment.findAll();
+        const getAllAppointments = await Appointment.findAll({
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+            include: [
+                {
+                    model: Intervention,
+                    as: 'intervention',
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+                {
+                    model: User,
+                    as: 'dentist',
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+                {
+                    model: User,
+                    as: 'patient',
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+            ],
+        });
 
         return res.json({
             success: true,
