@@ -9,7 +9,7 @@ const auth = require('../middlewares/verifyToken');
 //registro de doctores
 //obtencion de los perfiles
 router.get('/profile', auth, userController.getUserProfile);
-router.get('/allProfiles', auth, isStaff, userController.getAllUsersProfile);
+router.get('/allProfiles', auth, userController.getAllUsersProfile);
 // update de los perfiles de usuario
 router.put('/updateProfile', auth, userController.updateProfile);
 router.put('/:id',auth, isAdmin, userController.updateProfileByAdmin);

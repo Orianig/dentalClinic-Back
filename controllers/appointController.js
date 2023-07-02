@@ -7,14 +7,14 @@ const appointController = {};
 //crear nueva cita
 appointController.createAppointment = async (req, res) => {
     try {
-        const { date, interventionId, details, patientId, dentistId } = req.body;
+        const { date, startTime, endTime, interventionId, details, patientId, dentistId } = req.body;
         //tomo el role y user id para su validacion
 
         //CONDICIONALES
         // los usuarios con roleId igual a 3 pueden crear citas con su propio userId
         if (roleId === 3 && patientId !== userId) {
             //mensaje de error si trata de implementar otro usuario
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "You can only create appointments for yourself",
             });
@@ -23,7 +23,7 @@ appointController.createAppointment = async (req, res) => {
         //pacientes como para otros doctores => deben proporcionar un patientId valido
         if (roleId === 2 && !patientId) {
 
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "Patient ID is required for dentists",
             });
@@ -37,7 +37,7 @@ appointController.createAppointment = async (req, res) => {
                 }
             });
             if (!patient) {
-                return res.json({
+                return res.status(401).json({
                     success: false,
                     message: "Invalid patient ID",
                 });
@@ -52,7 +52,7 @@ appointController.createAppointment = async (req, res) => {
                 }
             });
             if (!dentist) {
-                return res.json({
+                return res.status(401).json({
                     success: false,
                     message: "Invalid dentist ID",
                 });
@@ -61,7 +61,9 @@ appointController.createAppointment = async (req, res) => {
         //parametros de la nueva cita
         const newAppointment = await Appointment.create(
             {
-                date,//'2023-06-07T14:30:00'
+                date,
+                startTime,
+                endTime,
                 interventionId,
                 details,
                 patientId,
@@ -95,23 +97,23 @@ appointController.updateAppointment = async (req, res) => {
         //confirmacion de la existencia de la cita
         const appointmentExist = await Appointment.findByPk(appointmentId);
         if (!appointmentExist) {
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "Appointment doesn't exist",
             });
         }
         //datos que se requeriran desde el body
-        const { date, details, results } = req.body;
+        const { date, startTime, endTime, details, interventionId, results } = req.body;
 
         //VALIDACIONES
         // Verificar si el usuario tiene permiso para actualizar la cita
         if (roleId === 3 && appointmentExist.patientId !== userId) {
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "You can only update your own appointments",
             });
         } else if (roleId === 2 && appointmentExist.dentistId !== userId) {
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "You can only update appointments where you are the assigned dentist",
             });
@@ -120,6 +122,9 @@ appointController.updateAppointment = async (req, res) => {
         const appointmentUpdate = await Appointment.update(
             {
                 date,
+                startTime,
+                endTime,
+                interventionId,
                 details,
                 //condiciona que solo el doctor pueda rellenar este campo
                 'results': roleId === 2 ? results : appointmentExist.results

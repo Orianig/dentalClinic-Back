@@ -10,7 +10,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: Sequelize.DATE, //'2023-06-07T14:30:00'
+        type: Sequelize.DATEONLY, //
+        allowNull: false,
+      },
+      startTime: {
+        type: Sequelize.TIME, //
+        allowNull: false,
+      },
+      endTime: {
+        type: Sequelize.TIME, //
         allowNull: false,
       },
       interventionId: {
